@@ -5,7 +5,7 @@ using UnityEngine;
 public class FiniteStateMachine : MonoBehaviour
 {
     protected IState entryState;
-    public protected IState currentState { get; private set; }
+    public IState CurrentState { get; private set; }
 
     protected virtual void Awake()
     {
@@ -25,27 +25,27 @@ public class FiniteStateMachine : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (currentState != null) 
+        if (CurrentState != null) 
         {
-            currentState.OnStateUpdate();
+            CurrentState.OnStateUpdate();
         }
     }
 
     public void SetState(IState state) 
     {
-        if(currentState != null) 
+        if(CurrentState != null) 
         {
-            currentState.OnStateExit();
+            CurrentState.OnStateExit();
         }
-        currentState = state;
-        currentState.OnStateEnter();
+        CurrentState = state;
+        CurrentState.OnStateEnter();
     }
 
     protected virtual void OnDrawGizmos()
     {
-        if(currentState != null) 
+        if(CurrentState != null) 
         {
-            currentState.DrawStateGizmos();
+            CurrentState.DrawStateGizmos();
         }
     }
 }
