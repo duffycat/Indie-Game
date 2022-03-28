@@ -9,7 +9,7 @@ public class testineracttoo : MonoBehaviour, IInteractable
     private void Start()
     {
         interaction.interactableDelegate += TestMethodThree;
-        interaction.interactableDelegate.Invoke();
+        //interaction.interactableDelegate.Invoke();
         
     }
 
