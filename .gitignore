@@ -12981,3 +12981,8 @@ AT03 Indie Game/Library/ShaderCache/5/5f2092cdb4dee512d642ca8154fea555.bin
 AT03 Indie Game/Library/ShaderCache/8/87e6c4fee0caa7159145eeedd85ea8c6.bin
 AT03 Indie Game/Library/ShaderCache/e/e6e7ac9d0fbad763a7cf86394f853c77.bin
 AT03 Indie Game/Library/StateCache/LayerSettings/9e/9ecc5c3c162a7aba29bafa64c8b94b7c.json
+MY Game/Temp/
+MY Game/obj/
+MY Game/Library/
+MY Game/Logs/
+MY Game/.vs/

@@ -29,13 +29,13 @@ public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         TryGetComponent(out image);
         transform.parent.TryGetComponent(out instance);
-
-    }
-
-    void Start()
-    {
         image.color = defultColor;
     }
+
+    //void Start()
+    //{
+
+    //}
 
     void Update()
     {
