@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class Enemy : FiniteStateMachine, IInteractable
 {
@@ -12,6 +13,7 @@ public class Enemy : FiniteStateMachine, IInteractable
     public EnemyWanderState wanderState;
     public EnemyChaseState chaseState;
     public EnemyStunState stunState;
+    public GameOnState gameOnState;
 
     public NavMeshAgent Agent { get; private set; }
 
@@ -21,17 +23,20 @@ public class Enemy : FiniteStateMachine, IInteractable
         wanderState = new EnemyWanderState(this, wanderState);
         chaseState = new EnemyChaseState(this, chaseState);
         stunState = new EnemyStunState(this, stunState);
-        entryState = idleState;
+        gameOnState = new GameOnState(this, gameOnState);
+        entryState = wanderState;
         if (TryGetComponent(out NavMeshAgent agent) == true)
         {
             Agent = agent;
         }
+
     }
 
     // Start is called before the first frame update
     protected override void Start()
     {
-        base.Start(); 
+        base.Start();
+        GameManger.Instance.Cheese.GotCheeseEvent += GameOn;
     }
 
     // Update is called once per frame
@@ -49,6 +54,10 @@ public class Enemy : FiniteStateMachine, IInteractable
         Gizmos.DrawWireSphere(transform.position, viewRadius);
     }
 
+    public void GameOn()
+    {
+       SetState(gameOnState);
+    }
 
     public void Activate()
     {
@@ -171,8 +180,11 @@ public class EnemyWanderState : EnemyBehaviourState
         {
             Instance.SetState(Instance.idleState);
         }
+        else if (Vector3.Distance(Instance.transform.position, Instance.player.position) < Instance.viewRadius)
+        {
+            Instance.SetState(Instance.chaseState);
+        }
 
-       
     }
 
     public override void DrawStateGizmos()
@@ -212,6 +224,13 @@ public class EnemyChaseState : EnemyBehaviourState
         if(Vector3.Distance(Instance.transform.position, Instance.player.position) > Instance.viewRadius) 
         {
             Instance.SetState(Instance.wanderState);
+        }
+        Vector3 here = Instance.transform.position - Instance.player.position;
+        if (here.x < 1 && here.z < 1 && here.x > -1 && here.z > -1)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -263,5 +282,42 @@ public class EnemyStunState : EnemyBehaviourState
     {
         //Gizmos.color = Color.magenta;
         //Gizmos.DrawWireSphere(targetPosition, 0.5f);
+    }
+
+}
+
+
+[System.Serializable]
+public class GameOnState : EnemyBehaviourState
+{
+    [SerializeField]
+    private float chaseGOSpeed = 5f;
+
+    public GameOnState(Enemy instance, GameOnState gameOnState) : base(instance)
+    {
+        chaseGOSpeed = gameOnState.chaseGOSpeed;
+    }
+
+    public override void OnStateEnter()
+    {
+        Instance.Agent.isStopped = false;
+        Instance.Agent.speed = chaseGOSpeed;
+        Debug.Log("Game on");
+    }
+
+    public override void OnStateExit()
+    {
+    }
+
+    public override void OnStateUpdate()
+    {
+        Instance.Agent.SetDestination(Instance.player.position);
+        Vector3 here = Instance.transform.position - Instance.player.position;
+        if (here.x < 1 && here.z < 1 && here.x > -1 && here.z > -1) 
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            SceneManager.LoadScene(0);
+        }
     }
 }

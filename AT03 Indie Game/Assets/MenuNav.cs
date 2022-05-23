@@ -83,7 +83,7 @@ public class MenuNav : MonoBehaviour
         {
         if(Input.GetButtonDown("Submit") == true) 
             {
-            SelectedButton.Activate();
+                SelectedButton.Activate();
             }
         }
     }

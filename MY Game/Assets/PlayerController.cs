@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         ApplyMovement();
     }
 
-    void ApplyMovement() 
+    void ApplyMovement()
     {
         float inputX = Input.GetAxisRaw("Vertical") * currentSpeed;
         float inputY = Input.GetAxisRaw("Horizontal") * currentSpeed;

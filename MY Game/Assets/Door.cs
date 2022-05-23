@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 public class Door : Interactable
 {
     public int sceneIndex = 0;
-    bool gotCheese = true;
+    bool gotCheese = false;
 
     public override void Activate()
     {
         if(gotCheese == true) 
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             SceneManager.LoadScene(sceneIndex);
             Debug.Log("work");
         }
@@ -19,5 +21,15 @@ public class Door : Interactable
         {
             Debug.Log("not work");
         }
+    }
+
+    public void UnlookDoor() 
+    {
+        gotCheese = true;
+    }
+
+    private void Start()
+    {
+        GameManger.Instance.Cheese.GotCheeseEvent += UnlookDoor;
     }
 }
