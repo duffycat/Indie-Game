@@ -17,8 +17,7 @@ public class MainManu : MonoBehaviour
     [SerializeField] private Button quitBtn;
 
     private float timer = -1;
-    private int currentButtonIndex = 0;
-    private MainManu currentButton;
+    private int currentButtonIndex = 2;
 
     private void Awake()
     {
@@ -27,47 +26,38 @@ public class MainManu : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("Fire1") == true) 
-        {
-            switch (currentButtonIndex)
-            {
-                case 0:
-                    LoadNewGame();
-                    break;
-                case 1:
-                    Info();
-                    break;
-                case 2:
-                    QuitGame();
-                    break;
-            }
-        }
-
         switch (currentButtonIndex)
         {
-            case 0:
-                
-                break;
-            case 1:
-
+            case -1:
+                currentButtonIndex = 2;
                 break;
             case 2:
-
+                playBtn.Select();
+                //Debug.Log(currentButtonIndex);
+                break;
+            case 1:
+                infoBtn.Select();
+                //Debug.Log(currentButtonIndex);
+                break;
+            case 0:
+                quitBtn.Select();
+                //Debug.Log(currentButtonIndex);
+                break;
+            case 3:
+                currentButtonIndex = 0;
                 break;
         }
 
         if (timer < 0)
         {
-            float move = Input.GetAxisRaw("MVertical");
+            float move = Input.GetAxisRaw("Vertical");
             if (move > 0)
             {
                 currentButtonIndex++;
-                Debug.Log("up");
             }
             else if (move < 0)
             {
                 currentButtonIndex--;
-                Debug.Log("not up");
             }
             timer = 0;
         }
@@ -79,7 +69,6 @@ public class MainManu : MonoBehaviour
                 timer = -1;
             }
         }
-
     }
 
     public void LoadNewGame() 
@@ -87,9 +76,13 @@ public class MainManu : MonoBehaviour
         SceneManager.LoadScene(sceneIndex);
     }
 
+    public DialogueUI ui;
+    [TextArea]
+    public string dialogue;
+
     public void Info()
     {
-        
+        ui.SetDialogueText(dialogue, true);
     }
 
     public void QuitGame() 

@@ -7,14 +7,15 @@ public class Door : Interactable
 {
     public int sceneIndex = 0;
     bool gotCheese = false;
+    public delegate void VictoryDel(string text);
+    public event VictoryDel VictoryEvent = delegate { };
 
     public override void Activate()
     {
         if(gotCheese == true) 
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            SceneManager.LoadScene(sceneIndex);
+            GameManger.Instance.Enemy.Agent.speed = 0f;
+            VictoryEvent.Invoke("You Win");
             Debug.Log("work");
         }
         else 
