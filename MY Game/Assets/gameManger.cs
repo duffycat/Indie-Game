@@ -26,6 +26,7 @@ public class GameManger : MonoBehaviour
         }
         Instance.door.VictoryEvent += GameOver;
         Instance.enemy.EndEvent += GameOver;
+        Instance.cheese.GoalEvent += Run;
     }
 
     // Update is called once per frame
@@ -45,6 +46,11 @@ public class GameManger : MonoBehaviour
 
     public EndUI ui;
     [SerializeField] private Button EndBtn;
+
+    public void Run(string text) 
+    {
+        ui.SetGoalText(text);
+    }
 
     public void GameOver(string text)
     {
